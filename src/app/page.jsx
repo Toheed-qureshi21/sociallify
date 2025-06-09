@@ -1,8 +1,35 @@
+import AllPosts from "@/components/AllPosts";
+import CreatePosts from "@/components/CreatePosts";
+import RecommendToFollow from "@/components/RecommendToFollow";
+import Sidebar from "@/components/Sidebar";
+import { getFeedPost } from "@/lib/api/post";
+import { cookies } from "next/headers";
 
-export default function Home(){
+
+export default async function Home(){
+  const cookieStore = await cookies()
+    const cookieHeader = cookieStore.getAll()
+  .map(c => `${c.name}=${c.value}`)
+  .join('; ');
+    const posts = await getFeedPost(cookieHeader) 
+  
 return (  
-    <div>
-        he;;p
-    </div>
+     
+  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 px-4 sm:px-8 mt-12">
+    <aside className="hidden lg:block lg:col-span-3 xl:col-span-3">
+      <Sidebar />
+    </aside>
+
+    <section className="lg:col-span-5 xl:col-span-6 space-y-6">
+      <CreatePosts />
+      <AllPosts />
+    </section>
+
+    <aside className="hidden lg:block lg:col-span-3 sticky top-20">
+      <RecommendToFollow />
+    </aside>
+  </div>
+
+
     )
  }

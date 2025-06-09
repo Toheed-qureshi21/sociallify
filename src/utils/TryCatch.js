@@ -7,8 +7,8 @@ export const TryCatch=(handlerFunction) => {
         await connectDb();
         return await handlerFunction(request);
     } catch (error) {
-        console.log(error);
-        return NextResponse.json({message:error ||"Something went wrong"},{status:500});
+        console.log("error",error);
+        return NextResponse.json({message:error.message ||"Something went wrong"},{status:500});
     }
    }
 }

@@ -8,6 +8,8 @@ import { useState } from "react";
 import { loginUser, registerUser } from "@/lib/api/user";
 import { Loader2 } from "lucide-react";
 import {toast} from "sonner"
+import { useUser } from "./UserContextProvider";
+import { useRouter } from "next/navigation";
 
 export default function LoginContent({ isLogin }) {
     const [name,setName] = useState('');
@@ -16,6 +18,8 @@ export default function LoginContent({ isLogin }) {
         password: ''
     });
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
+    const {setUser} = useUser(); 
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -26,25 +30,28 @@ export default function LoginContent({ isLogin }) {
         }
         try {
             if (isLogin) {
-            const res = await loginUser(formData);
-            // console.log(res);      
+            const data = await loginUser(formData);
+            setUser(data.user);   
             setLoading(false);
-             toast(res.message);
+             toast(data.message);
         } else {
-            const res = await registerUser({ ...formData, name });
-            // console.log(res);
+            const data = await registerUser({ ...formData, name });
+            setUser(data.user)
             setLoading(false);  
-            toast(res.message);
+            toast(data.message);
+            setFormData({ email: '', password: '' });
         }
         setLoading(false);
         setName('');
         setFormData({ email: '', password: '' });
+        router.push("/");
         } catch (error) {
-            toast.error(error?.response?.data?.message?.issues[0]?.message|| 'Something went wrong',{
+            toast.error(error?.response?.data?.message?.issues[0]?.message|| error?.response?.data?.message,{
                 closeButton: true,
             });
-            console.log(error?.response?.data?.message?.issues[0]?.message);
-            
+            setLoading(false);
+            setUser(null);
+            console.log(error?.response?.data?.message?.issues[0]?.message);   
         }
         
         

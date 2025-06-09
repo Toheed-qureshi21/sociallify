@@ -23,6 +23,6 @@ export default function Logout() {
     }
 
     return (
-        <Button onClick={() => signOut()}>Logout</Button>
+        <Button onClick={() => signOut()} className='w-full'>Logout</Button>
     )
 }

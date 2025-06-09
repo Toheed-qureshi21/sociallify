@@ -3,25 +3,36 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 // utils/cookie.js  (unchanged)
+
 export const setAuthCookies = (accessToken, refreshToken, data = {}, status = 200) => {
+  console.log(NextResponse );
+  
   const res = new NextResponse(JSON.stringify(data), {
     status,
     headers: { "content-type": "application/json" },
   });
+// const res = NextResponse.next();
+  console.log("refresh token and access token", refreshToken, accessToken);
 
   res.cookies.set("access_token", accessToken, {
-    ...cookieConfig,
-    maxAge: 15 * 60,
+   httpOnly: true,
+        path: "/",
+        maxAge: 15 * 60,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
   });
+
   res.cookies.set("refresh_token", refreshToken, {
-    ...cookieConfig,
-    maxAge: 7 * 24 * 60 * 60,
+    httpOnly: true,
+        path: "/",
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+    maxAge: 7 * 24 * 60 * 60, // 7 days
   });
+
 
   return res;
 };
-
-
 
 export const getTokenCookies = async() => {
   const cookieStore = await cookies();

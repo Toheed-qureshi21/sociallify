@@ -18,7 +18,7 @@ export const generateAccessToken = async (payload, expiresIn = "15m") => {
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime(expiresIn)
     .sign(accessSecret);
-};
+};  
 
 export const generateRefreshToken = async (payload, expiresIn = "7d") => {
   const normalizedPayload = normalizePayload(payload);
