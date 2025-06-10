@@ -15,8 +15,7 @@ export const registerUser = async (userData) => {
 }
 
 export const loginUser = async (userData) => {
-        try {
-                
+    
                 if (!userData.email || !userData.password) {
                   throw new Error("All fields are required");
                 }
@@ -24,9 +23,7 @@ export const loginUser = async (userData) => {
                 // console.log(response);
                 
                 return response.data;
-        } catch (error) {
-                throw new Error(error?.response?.data?.message || "Something went wrong");
-        }
+       
 }
 
 export const getUser = async (cookieStore) => {

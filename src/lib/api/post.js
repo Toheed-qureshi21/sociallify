@@ -50,3 +50,7 @@ export const toggleLike = async (postId) => {
         throw new Error(error?.response?.data?.message || "Something went wrong while liking the post");
     }
 }
+export const deletePost = async(postId) => {
+    const response = await axios.delete(`/protected/post/delete-post?postId=${postId}`);
+    return response.data;
+}

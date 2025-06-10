@@ -9,19 +9,19 @@ import { ImageIcon, Loader2, SendIcon, XIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { createPost } from "@/lib/api/post";
 import { toast } from "sonner";
-import { set } from "mongoose";
+
 
 export default function CreatePosts() {
   const { user,setUser,setPosts } = useUser();
   const [text, setText] = useState("");
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!text.trim() && !image) return;
-    setIsLoading(true);
+    setIsPosting(true);
     try {
       const formData = new FormData();
       formData.append("text", text);
@@ -40,7 +40,7 @@ export default function CreatePosts() {
       setText("");
       setImage(null);
       setPreviewUrl(null);
-      setIsLoading(false);
+      setIsPosting(false);
     }
   };
 
@@ -72,7 +72,7 @@ export default function CreatePosts() {
                 placeholder={`What's on your mind, ${user?.name || "User"}?`}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                disabled={isLoading}
+                disabled={isPosting}
               />
             </div>
 
@@ -116,11 +116,11 @@ export default function CreatePosts() {
                 />
               </div>
               <Button
-                className={`flex items-center ${isLoading ? "cursor-not-allowed" : ""}`}
+                className={`flex items-center ${isPosting ? "cursor-not-allowed" : ""}`}
                 type="submit"
-                disabled={isLoading || (!text.trim() && !image)}
+                disabled={isPosting || (!text.trim() && !image)}
               >
-                {isLoading ? (
+                {isPosting ? (
                   <>
                     <Loader2 size={16} className="animate-spin mr-2" />
                     Posting...

@@ -8,6 +8,7 @@ export const useUser = () => useContext(UserCtx);
 export default function UserProvider({ initialUser, children,initialPost }) {
   const [user, setUser] = useState(initialUser || null);
   const [posts, setPosts] = useState(initialPost || []);
+  const [isDeleting,setIsDeleting] =  useState(false);
   useEffect(() => {
     if (user?._id) {
       getFeedPost(user._id).then((feed) => {
@@ -26,7 +27,7 @@ export default function UserProvider({ initialUser, children,initialPost }) {
 
 
   return (
-    <UserCtx.Provider value={{ user,setUser,posts,setPosts}}>
+    <UserCtx.Provider value={{ user,setUser,posts,setPosts,isDeleting,setIsDeleting}}>
       {children}
     </UserCtx.Provider>
   );

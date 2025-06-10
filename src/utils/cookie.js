@@ -5,14 +5,13 @@ import { NextResponse } from "next/server";
 // utils/cookie.js  (unchanged)
 
 export const setAuthCookies = (accessToken, refreshToken, data = {}, status = 200) => {
-  console.log(NextResponse );
   
   const res = new NextResponse(JSON.stringify(data), {
     status,
     headers: { "content-type": "application/json" },
   });
 // const res = NextResponse.next();
-  console.log("refresh token and access token", refreshToken, accessToken);
+
 
   res.cookies.set("access_token", accessToken, {
    httpOnly: true,

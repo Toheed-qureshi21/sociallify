@@ -13,11 +13,15 @@ export const POST = TryCatch(async (request) => {
     }
     const result = SignupSchema.safeParse(body);
     if (!result.success) {
+        console.log(result.error);
+        
         return NextResponse.json({ message: result.error }, { status: 400 });
     }
     const {name,email,password} = result.data;
     let user = await User.findOne({email});
     if (user) {
+        console.log("User already exists with this email");
+        
         return NextResponse.json({ message: "User already exists with this email" }, { status: 400 });
     }
     const hashedPassword = await toHashPassword(password,12);

@@ -8,13 +8,14 @@ import { Button } from "./ui/button";
 import { HeartIcon, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { toggleLike } from "@/lib/api/post";
+import { deletePost, toggleLike } from "@/lib/api/post";
+import { useUser } from "./UserContextProvider";
 
 
 export default function PostCard({ post, user }) {
   const [hasLiked,setHasLiked] = useState(false);
   const [isLiking,setIsLiking] = useState(false);
-  const [isDeleting,setIsDeleting] =  useState(false);
+  const {setIsDeleting,setUser,setPosts} = useUser();  
   const [optimisticLikes,setIsOptimisticLikes] = useState(post?.likesCount);
 
   const handleLike = async () => {
@@ -30,6 +31,20 @@ export default function PostCard({ post, user }) {
     }finally{
        setIsLiking(false);
     }
+  }
+  const handleDelete = async (postId) => {
+    setIsDeleting(true);   
+    try {      
+        const data = await deletePost(postId);
+        toast(data?.message,{closeButton:true});
+        setUser(data?.user);
+  
+        setPosts(prev => prev.filter(post => post._id !== postId));
+       } catch (error) {
+        toast(error?.response?.data?.message || "Something went wrong", { closeButton: true });
+       } finally{
+        setIsDeleting(false);
+       }    
   }
 
   return (
@@ -63,7 +78,7 @@ export default function PostCard({ post, user }) {
                   </div>
                 </div>
                 {/* Deleting post button if post.userId._id === user._id */}
-                {post.userId._id === user._id && <DeleteDialog />}
+                {post.userId._id === user._id && <DeleteDialog onDelete={()=>handleDelete(post._id)} />}
               </div>
               <p className="mt-2 text-sm text-foreground break-words">
                 {post.content}
@@ -86,7 +101,7 @@ export default function PostCard({ post, user }) {
           <div className="flex items-center  pt-2 space-x-4">
             {
               user ? (
-                <div className="flex flex-col gap-2 items-center">
+              
 
                 <Button variant='ghost' size='sm' className='text-muted-foreground gap-2' onClick={handleLike} disabled={isLiking}>
                     {
@@ -97,10 +112,9 @@ export default function PostCard({ post, user }) {
                         
                       )
                     }
-                </Button>
                     <span>{optimisticLikes}</span>
                     {/* <span>{post.likesCount}</span> */}
-                    </div>
+                </Button>
               ):(
                 // If user is not logged in we have to redirect them into login page
                 <Link href="/auth">
@@ -110,14 +124,13 @@ export default function PostCard({ post, user }) {
                 </Link>
               )
             }
-                 <div className="flex flex-col gap-2 items-center">
 
             {/* Comment */}
             <Button variant='ghost' size='sm' className='text-muted-foreground gap-2 hover:text-blue-500'>
               <MessageCircle className="size-5"/>
-            </Button>
               <span>{post.commentCount}</span>
-                 </div>
+            </Button>
+                 
           </div>
         </div>
       </CardContent>

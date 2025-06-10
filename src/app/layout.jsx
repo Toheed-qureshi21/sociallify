@@ -37,7 +37,10 @@ export default async function RootLayout({children }) {
   const cookieHeader = cookieStore.getAll()
   .map(c => `${c.name}=${c.value}`)
   .join('; ');
-  const posts = await getFeedPost(cookieHeader);
+  let posts = []
+  if (user) {
+     posts = await getFeedPost(cookieHeader);
+  }
 
   
   
