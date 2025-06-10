@@ -11,7 +11,7 @@ export default function AllPosts(){
 return (
       <ul className="space-y-4">
     {posts?.length > 0 ? (
-      posts.map((p) => <PostCard key={p?._id} post={p} user={user} />)
+      posts?.map((p) => <PostCard key={p?._id} post={p} user={user} />)
     ) : (
       <div className="text-center text-muted-foreground mt-10">
         No posts available.

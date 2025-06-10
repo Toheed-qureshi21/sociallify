@@ -5,12 +5,32 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { formatDistanceToNow } from "date-fns";
 import DeleteDialog from "./DeleteDialog";
 import { Button } from "./ui/button";
-import { HeartIcon } from "lucide-react";
+import { HeartIcon, MessageCircle } from "lucide-react";
 import { useState } from "react";
-import { Linden_Hill } from "next/font/google";
+import { toast } from "sonner";
+import { toggleLike } from "@/lib/api/post";
+
 
 export default function PostCard({ post, user }) {
   const [hasLiked,setHasLiked] = useState(false);
+  const [isLiking,setIsLiking] = useState(false);
+  const [isDeleting,setIsDeleting] =  useState(false);
+  const [optimisticLikes,setIsOptimisticLikes] = useState(post?.likesCount);
+
+  const handleLike = async () => {
+    if(isLiking) return;
+
+    try {
+      setIsLiking(true);
+      setHasLiked((prev)=>!prev);
+      setIsOptimisticLikes((prev) => (hasLiked ? prev - 1 : prev + 1));
+      await toggleLike(post?._id);
+    } catch (error) {
+      toast(error?.message || "Something went wrong", { closeButton: true });
+    }finally{
+       setIsLiking(false);
+    }
+  }
 
   return (
     <Card className="overflow-hidden space-y-4">
@@ -63,24 +83,41 @@ export default function PostCard({ post, user }) {
 
           {/* Like and comment button */}
 
-          <div className="flex items-center pt-2 space-x-4">
+          <div className="flex items-center  pt-2 space-x-4">
             {
               user ? (
-                <Button variant='ghost' size='sm' className='text-muted-foreground gap-2' onClick={() => setHasLiked(!hasLiked)}>
+                <div className="flex flex-col gap-2 items-center">
+
+                <Button variant='ghost' size='sm' className='text-muted-foreground gap-2' onClick={handleLike} disabled={isLiking}>
                     {
                       hasLiked  ? (
                         <HeartIcon className="size-5 text-red-500 fill-red-500"/>
                       ):(
                         <HeartIcon className="size-5"/>
-
+                        
                       )
                     }
-                    {/* <span>{optimisticLikes}</span> */}
                 </Button>
+                    <span>{optimisticLikes}</span>
+                    {/* <span>{post.likesCount}</span> */}
+                    </div>
               ):(
-                <Link href="/auth"></Link>
+                // If user is not logged in we have to redirect them into login page
+                <Link href="/auth">
+                  <Button variant='ghost' size='sm'>
+                    <HeartIcon className="size-5"/>
+                  </Button>
+                </Link>
               )
             }
+                 <div className="flex flex-col gap-2 items-center">
+
+            {/* Comment */}
+            <Button variant='ghost' size='sm' className='text-muted-foreground gap-2 hover:text-blue-500'>
+              <MessageCircle className="size-5"/>
+            </Button>
+              <span>{post.commentCount}</span>
+                 </div>
           </div>
         </div>
       </CardContent>

@@ -42,3 +42,11 @@ export const createPost = async (postData) => {
             console.log(error?.response?.data?.message);
         }
     }
+export const toggleLike = async (postId) => {
+    try {
+        const response = await axios.post('protected/likes',{postId});
+        return response.data;
+    } catch (error) {
+        throw new Error(error?.response?.data?.message || "Something went wrong while liking the post");
+    }
+}
