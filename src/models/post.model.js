@@ -38,6 +38,7 @@ postSchema.pre("findOneAndDelete", async function (next) {
     await mongoose.model("Like").deleteMany({ postId});
     await mongoose.model("User").updateOne({_id:userId}, { $pull: { posts: postId } });
     await mongoose.model("Comment").deleteMany({ postId});
+    await mongoose.model("Notification").deleteMany({ post: postId });
   }
   next();
 });

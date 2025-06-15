@@ -4,11 +4,11 @@ import { NextResponse } from "next/server";
 
 // utils/cookie.js  (unchanged)
 
-export const setAuthCookies = (accessToken, refreshToken, data = {}, status = 200) => {
+export const setAuthCookies = (accessToken, refreshToken,user, message ="", status = 200) => {
   
-  const res = new NextResponse(JSON.stringify(data), {
+  const res = new NextResponse(JSON.stringify({message,user}), {
     status,
-    headers: { "content-type": "application/json" },
+    headers: { "Content-Type": "application/json" },
   });
 // const res = NextResponse.next();
 

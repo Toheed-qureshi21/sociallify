@@ -53,6 +53,8 @@ userSchema.pre('findOneAndDelete', async function(next) {
         await mongoose.model("Post").deleteMany({ userId: user._id });
         // Remove all comments associated with the user
         await mongoose.model("Comment").deleteMany({ userId: user._id });
+        await mongoose.model("Like").deleteMany({ userId: user._id });
+        await mongoose.model("Notification").deleteMany({ receiverUser: user._id || senderUser._id });
     }
     next();
 })

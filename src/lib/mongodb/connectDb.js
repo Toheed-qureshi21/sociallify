@@ -7,15 +7,17 @@ export const connectDb = async () => {
 
     await mongoose.connect(process.env.MONGO_URI, {
       dbName: "Sociallify",
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS:10000
     });
 
     isConnected = true;
     console.log("MongoDb connected ✅");
 
   } catch (error) {
-    console.log(error);
-
+    console.error("MongoDB connection failed ❌");
+    console.log(error?.message || error);
+    process.exit(1)
   }
 }
 

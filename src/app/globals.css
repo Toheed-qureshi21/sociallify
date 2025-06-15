@@ -139,3 +139,12 @@ button:hover{
   cursor: pointer;
 }
 /* styles/globals.css or wherever your tailwind config is */
+/* in your globals.css or PostCard.module.css */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}

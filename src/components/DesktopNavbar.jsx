@@ -43,7 +43,15 @@ export default function DesktopNavbar() {
         <>
           <li>
             <Link href="/notification" className="nav-links">
-              <Bell size={20} />
+           <span className="relative">
+  <Bell size={20} />
+  {/* { notifications.length !== 0 && notifications?.filter((n) => !n.isRead).length > 0 && (
+    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] min-w-[16px] h-[16px] px-[4px] rounded-full flex items-center justify-center">
+      {notifications.filter((n) => !n.isRead).length}
+    </span>
+  )} */}
+</span>
+
               Notification
             </Link>
           </li>

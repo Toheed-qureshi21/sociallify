@@ -33,6 +33,7 @@ export const GET = TryCatch(async (request) => {
     postId: { $in: posts.map(post => post._id) }
   })
     .populate("userId", "name profilePic")
+    .sort({ createdAt: -1 })
     .lean();
 
   const commentsOfPost = {};
@@ -42,12 +43,19 @@ export const GET = TryCatch(async (request) => {
     commentsOfPost[key].push(comment);
   });
 
-  
+  // Fetch likes by this user on the same post set
+  const likes = await Like.find({
+    postId: { $in: posts.map(post => post._id) },
+    userId,
+  }).lean();
+
+  const likedPostIds = new Set(likes.map(like => like.postId.toString()));
+
   const feed = posts.map(post => ({
     ...post,
     comments: commentsOfPost[post._id.toString()] || [],
-    // likeCount is already in post.likeCount
+    hasLiked: likedPostIds.has(post._id.toString()), // ✅ Add this
   }));
-
+  
   return NextResponse.json({ feed }, { status: 200 });
 });

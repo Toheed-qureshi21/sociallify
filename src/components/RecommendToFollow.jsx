@@ -12,7 +12,7 @@ import FollowUnfollowButton from "./FollowUnfollowButton";
 export default function RecommendToFollow() {
   const [randomUsers,setRandomUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useUser();
+  const { user,setUser } = useUser();
   const [isFollowing,setIsFollowing] = useState(user?.following.includes(randomUsers?._id));
   
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function RecommendToFollow() {
       if (followed) {
         setIsFollowing(true);
       }
-      setUser(currentUser);
+      // setUser(currentUser);
       return toast(message);
     } catch (error) {
       toast(error?.message || "Something went wrong", { closeButton: true });
@@ -40,7 +40,7 @@ export default function RecommendToFollow() {
   
   if (!user) return null;
   return (
-    <Card>
+    <Card className='sticky top-20'>
       <CardHeader>
         <CardTitle>Recommend to follow</CardTitle>
       </CardHeader>

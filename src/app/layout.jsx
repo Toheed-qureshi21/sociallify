@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import UserProvider from "@/components/UserContextProvider";
 // import { getFeedPost } from "@/lib/api/post";
 import { getFeedPost } from "@/lib/api/post";
+import { getNotifications } from "@/lib/api/notification";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,28 +39,33 @@ export default async function RootLayout({children }) {
   .map(c => `${c.name}=${c.value}`)
   .join('; ');
   let posts = []
+  // let notifications = []
   if (user) {
      posts = await getFeedPost(cookieHeader);
+    //  notifications = await getNotifications(cookieHeader);
   }
-
-  
+ 
   
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${jaini.variable} antialiased`}
       >
+  
         <ThemeWrapper>
-          <UserProvider initialUser={user} initialPost={posts}>
+          <UserProvider initialUser={user} initialPost={posts} 
+          // initialNotification={notifications}
+          >
             <div className="min-h-screen min-w-screen">
               <Navbar />
               <main>
-                <div className="max-w-8xl mx-auto px-12">{children}</div>
+                <div className="max-sm:mx-8 sm:mx-auto sm:px-12" user={user}>{children}</div>
               </main>
             </div>
           </UserProvider>
           <Toaster />
         </ThemeWrapper>
+      
       </body>
     </html>
   );

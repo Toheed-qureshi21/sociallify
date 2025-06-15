@@ -77,7 +77,7 @@ export default function CreatePosts() {
             </div>
 
             {previewUrl && (
-              <div className="relative w-full max-w-xs rounded-md overflow-hidden border">
+              <div className="relative w-full max-w-xs rounded-md overflow-hidden border sm:ml-12">
                 <img
                   src={previewUrl}
                   alt="Preview"

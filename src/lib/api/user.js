@@ -54,10 +54,19 @@ export const getUser = async (cookieStore) => {
 
 export const fetchRandomUsers = async() => {
     try {
-      const response = await axios.get('/protected/recommend-users');
-      return response.data.randomUsers;
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/protected/recommend-users`,{
+        method:'GET',
+        // cache:'force-cache',
+        credentials:"include"
+      });
+      const data = await response.json()
+      console.log(data);
+      
+      return data?.randomUsers;
     } catch (error) {
-      throw new Error(error?.response?.data?.message || "Something went wrong while fetching random users");
+      console.log(error?.message);
+      
+      // throw new Error(error?.response?.data?.message || "Something went wrong while fetching random users");
     }
 }
 export const followAndUnfollow = async(userId) => {
@@ -69,4 +78,14 @@ export const followAndUnfollow = async(userId) => {
         
         throw new Error(error?.response?.data?.message || "Something went wrong while following user");
       }
+}
+export const getUserById = async(userId) => {
+  try {
+    const response = await axios.get(`/protected/get-user-by-id/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response.data.message;
+    
+  }
 }

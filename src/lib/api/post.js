@@ -30,27 +30,41 @@ export const createPost = async (postData) => {
             // if (!userId) {
             //     return null;
             // }
-            const response = await axios.get(`/protected/post/posts`,{
+            // const response = await axios.get(`/protected/post/posts`,{
+            //     headers:{
+            //         Cookie: cookieHeader
+            //     }
+            // });
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/protected/post/posts`,{
+                method:'GET',
                 headers:{
                     Cookie: cookieHeader
-                }
-            });
+                },
+                cache: 'no-cache',
+                revalidate: 0
+            })
             // console.log("REsponse in frontend of post ",response.data);
-            // const data = await response.json()
-            return response.data?.feed;
+            const data = await response.json()
+            // return response.data?.feed;
+            return data?.feed
         } catch (error) {
             console.log(error?.response?.data?.message);
         }
     }
-export const toggleLike = async (postId) => {
-    try {
-        const response = await axios.post('protected/likes',{postId});
-        return response.data;
-    } catch (error) {
-        throw new Error(error?.response?.data?.message || "Something went wrong while liking the post");
+    export const toggleLike = async (postId) => {
+        try {
+            const response = await axios.post('protected/likes',{postId});
+            return response.data;
+        } catch (error) {
+            throw new Error(error?.response?.data?.message || "Something went wrong while liking the post");
+        }
     }
-}
 export const deletePost = async(postId) => {
     const response = await axios.delete(`/protected/post/delete-post?postId=${postId}`);
+    return response.data;
+}
+
+export const createComment = async (comment,postId) => {
+    const response = await axios.post('/protected/comments/create-comment',{comment,postId});
     return response.data;
 }

@@ -29,6 +29,6 @@ export const POST = TryCatch(async (request) => {
     user.password = undefined;
     const accessToken = await generateAccessToken({id:user._id});
     const refreshToken = await generateRefreshToken({id:user._id});
-    await setAuthCookies(accessToken,refreshToken);
-    return NextResponse.json({ user,message:"User registered successfully" }, { status: 201 });
+     return setAuthCookies(accessToken,refreshToken,user,`Hey ${user.name} welcome to sociallify.You have registered successfully`,201);
+    // return NextResponse.json({ user,message:"User registered successfully" }, { status: 201 });
 });

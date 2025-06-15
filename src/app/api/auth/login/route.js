@@ -35,7 +35,7 @@ export const POST = TryCatch(async (request) => {
 
   const res = new NextResponse(
     JSON.stringify({
-      message: "logged in",
+      message: `Hey ${user.name} welcome back`,
       user,
     }),
     {

@@ -7,7 +7,7 @@ import AuthanticatedSidebar from "./AuthanticatedSidebar";
 export default function Sidebar(){
     const {user} = useUser();
 return (
-    <aside className="sticky top-16 ">
+    <aside className="sticky top-20 ">
     <Card>
         {
             user ? (
