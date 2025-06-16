@@ -10,6 +10,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useUser } from "./UserContextProvider";
 import { useRouter } from "next/navigation";
+import AuthButtons from "./AuthButtons";
 
 export default function LoginContent({ isLogin }) {
   const [name, setName] = useState("");
@@ -124,6 +125,11 @@ export default function LoginContent({ isLogin }) {
             "Sign Up"
           )}
         </Button>
+        {
+          isLogin && (
+            <AuthButtons/>
+          )
+        }
       </CardFooter>
     </form>
   );

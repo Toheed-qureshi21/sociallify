@@ -8,7 +8,7 @@ import { cookies } from "next/headers";
 import UserProvider from "@/components/UserContextProvider";
 // import { getFeedPost } from "@/lib/api/post";
 import { getFeedPost } from "@/lib/api/post";
-import { getNotifications } from "@/lib/api/notification";
+import SessionWrapper from "@/components/SessionWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,7 +51,8 @@ export default async function RootLayout({children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${jaini.variable} antialiased`}
       >
-  
+        <SessionWrapper>
+
         <ThemeWrapper>
           <UserProvider initialUser={user} initialPost={posts} 
           // initialNotification={notifications}
@@ -65,7 +66,9 @@ export default async function RootLayout({children }) {
           </UserProvider>
           <Toaster />
         </ThemeWrapper>
+            </SessionWrapper>
       
+    
       </body>
     </html>
   );

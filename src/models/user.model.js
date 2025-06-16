@@ -1,54 +1,57 @@
 import mongoose, { model, models } from "mongoose";
 
 const userSchema = new mongoose.Schema({
-        name:{
-            type:String,
-            required:true
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: function () {
+            // Required only if not using OAuth
+            return !this.oauth
         },
-        email:{
-            type:String,
-            required:true,
-            unique:true
-        },
-        password:{
-            type:String,
-            required:true,
-            minLength:6,         
-        },
-        role:{
-            type:String,
-            enum:["user","admin"],
-            default:"user",
-        },
-        bio:{
-            type:String,
-            default:""
-        },
-        profilePic:{
-            type:String,
-        },
+        minLength: 6,
+    },
+    oauth: {
+        type: Boolean,
+        default: false,
+    },
 
-        followers:[{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"User",
-            default:[],
-        }],
-        following:[{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"User",
-            default:[],
-        }],
-        posts:[{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Post",
-            default:[],
-        }],
+    bio: {
+        type: String,
+        default: ""
+    },
+    profilePic: {
+        type: String,
+    },
 
-},{timestamps:true});
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: [],
+    }],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: [],
+    }],
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+        default: [],
+    }],
 
-userSchema.pre('findOneAndDelete', async function(next) {
+}, { timestamps: true });
+
+userSchema.pre('findOneAndDelete', async function (next) {
     const user = await this.model.findOne(this.getFilter());
-    if(user){
+    if (user) {
         // Remove all posts associated with the user
         await mongoose.model("Post").deleteMany({ userId: user._id });
         // Remove all comments associated with the user
@@ -59,4 +62,4 @@ userSchema.pre('findOneAndDelete', async function(next) {
     next();
 })
 
-export const User = models.User || model("User",userSchema);
+export const User = models?.User || model("User", userSchema);
