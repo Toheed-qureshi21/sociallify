@@ -30,7 +30,10 @@ const userSchema = new mongoose.Schema({
     profilePic: {
         type: String,
     },
-
+    isEmailVerified:{
+        type: Boolean,
+        default: false
+    },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -57,7 +60,10 @@ userSchema.pre('findOneAndDelete', async function (next) {
         // Remove all comments associated with the user
         await mongoose.model("Comment").deleteMany({ userId: user._id });
         await mongoose.model("Like").deleteMany({ userId: user._id });
-        await mongoose.model("Notification").deleteMany({ receiverUser: user._id || senderUser._id });
+           await mongoose.model("Notification").deleteMany({
+            $or: [{ receiverUser: user._id }, { senderUser: user._id }]
+        });
+        await mongoose.model("VerifyEmail").deleteMany({ userId: user._id });
     }
     next();
 })

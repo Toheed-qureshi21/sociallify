@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { loginUser, registerUser } from "@/lib/api/user";
-import { Loader2 } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useUser } from "./UserContextProvider";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,7 @@ import AuthButtons from "./AuthButtons";
 
 export default function LoginContent({ isLogin }) {
   const [name, setName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -92,18 +93,32 @@ export default function LoginContent({ isLogin }) {
           />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-2 relative">
           <Label htmlFor="password">Password</Label>
           <Input
             id="password"
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             required
             value={formData.password}
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
             }
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-2 bottom-2"
+          >
+            {
+              showPassword ? (
+                <EyeOffIcon size={18} />
+              ) : (
+
+                <EyeIcon size={18} />
+              )
+            }
+          </button>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col">
@@ -125,11 +140,7 @@ export default function LoginContent({ isLogin }) {
             "Sign Up"
           )}
         </Button>
-        {
-          isLogin && (
-            <AuthButtons/>
-          )
-        }
+        {isLogin && <AuthButtons />}
       </CardFooter>
     </form>
   );

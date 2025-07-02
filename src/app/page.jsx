@@ -15,12 +15,12 @@ export default async function Home(){
   
 return (  
      
-  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 px-4 sm:px-8 mt-12">
-    <aside className="hidden lg:block lg:col-span-3 xl:col-span-3">
+  <div className="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-6 px-4 sm:px-8 mt-12">
+    <aside className="hidden md:block md:col-span-4 lg:col-span-3 xl:col-span-3">
       <Sidebar />
     </aside>
 
-    <section className="lg:col-span-5 xl:col-span-6 space-y-6">
+    <section className="md:col-span-8 lg:col-span-5 xl:col-span-6 space-y-6">
       <CreatePosts />
       <AllPosts />
     </section>

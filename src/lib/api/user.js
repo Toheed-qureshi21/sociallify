@@ -35,7 +35,7 @@ export const getUser = async (cookieStore) => {
       return null;
     }
 
-    const res = await fetch(`http://localhost:3000/api/auth/profile`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/profile`, {
       method: "GET",
       headers: {
         Cookie: `access_token=${accessToken}; refresh_token=${refreshToken}`,
@@ -82,10 +82,12 @@ export const followAndUnfollow = async(userId) => {
 export const getUserById = async(userId) => {
   try {
     const response = await axios.get(`/protected/get-user-by-id/${userId}`);
+    console.log("api calling res ",response.data);
+    
     return response.data;
   } catch (error) {
     console.log(error);
-    return error.response.data.message;
+    return error
     
   }
 }

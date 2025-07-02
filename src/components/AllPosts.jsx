@@ -1,11 +1,14 @@
 'use client'
 import PostCard from "./PostCard";
+import PostCardSkeleton from "./PostCardSkeleton";
 import { useUser } from "./UserContextProvider";
 
 export default function AllPosts(){
-    const {posts,user} = useUser();
+    const {posts,user,postLoading} = useUser();
     console.log(posts);
-
+if (postLoading) {
+  return <PostCardSkeleton/>
+}
 return (
       <ul className="space-y-4">
     {posts?.length > 0 ? (

@@ -68,3 +68,4 @@ export const createComment = async (comment,postId) => {
     const response = await axios.post('/protected/comments/create-comment',{comment,postId});
     return response.data;
 }
+

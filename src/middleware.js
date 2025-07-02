@@ -4,11 +4,10 @@
   export async function middleware(req) {
     const url = req.nextUrl.clone();
     
-    const PUBLIC_PATHS = ["/auth",  "/"];
+    const PUBLIC_PATHS = ["/auth"];
     // const PUBLIC_PATHS = ["/auth"];
 
     if (
-      url.pathname === "/" ||
       PUBLIC_PATHS.some(path => path !== "/" && url.pathname.startsWith(path))
     ) {
       return NextResponse.next();
@@ -75,8 +74,8 @@
 
   export const config = {
     matcher: [
-      // "/",
-      "/profile",
+      "/",
+      "/profile/:path*",
       "/notification",
       "/admin/:path*",
       "/api/protected/:path*",

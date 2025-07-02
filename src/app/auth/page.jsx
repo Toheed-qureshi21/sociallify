@@ -15,7 +15,7 @@ import {
 export default function AuthTabs() {
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <Tabs defaultValue="login" className="w-[400px]">
+      <Tabs defaultValue="login" className="w-[300px] sm:w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login" className="hover:cursor-pointer ">Login</TabsTrigger>
           <TabsTrigger value="signup" className="hover:cursor-pointer">Signup</TabsTrigger>

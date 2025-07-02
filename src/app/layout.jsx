@@ -57,10 +57,10 @@ export default async function RootLayout({children }) {
           <UserProvider initialUser={user} initialPost={posts} 
           // initialNotification={notifications}
           >
-            <div className="min-h-screen min-w-screen">
+            <div className="h-screen w-screen">
               <Navbar />
               <main>
-                <div className="max-sm:mx-8 sm:mx-auto sm:px-12" user={user}>{children}</div>
+                <div className=" sm:mx-auto sm:px-8" user={user}>{children}</div>
               </main>
             </div>
           </UserProvider>

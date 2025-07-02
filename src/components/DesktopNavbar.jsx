@@ -12,19 +12,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import Image from "next/image";
 
 export default function DesktopNavbar() {
   const { user } = useUser();
   let firstNameLetter = "";
-  let surnameLetter=""
+  let surnameLetter = ""
   if (user) {
     const fullName = user.name;
     const parts = fullName.trim().split(" ");
-  
-     firstNameLetter = parts[0].charAt(0);
- 
+
+    firstNameLetter = parts[0].charAt(0);
+
     if (parts.length === 2) {
-       surnameLetter = parts[1].charAt(0);
+      surnameLetter = parts[1].charAt(0);
     }
   }
 
@@ -43,14 +44,14 @@ export default function DesktopNavbar() {
         <>
           <li>
             <Link href="/notification" className="nav-links">
-           <span className="relative">
-  <Bell size={20} />
-  {/* { notifications.length !== 0 && notifications?.filter((n) => !n.isRead).length > 0 && (
+              <span className="relative">
+                <Bell size={20} />
+                {/* { notifications.length !== 0 && notifications?.filter((n) => !n.isRead).length > 0 && (
     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] min-w-[16px] h-[16px] px-[4px] rounded-full flex items-center justify-center">
       {notifications.filter((n) => !n.isRead).length}
     </span>
   )} */}
-</span>
+              </span>
 
               Notification
             </Link>
@@ -58,10 +59,17 @@ export default function DesktopNavbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center hover:cursor-pointer text-white">
-                {firstNameLetter}
-                {surnameLetter}
-              </Button>
+              {
+                user.profilePic ? (
+                  <img src={user.profilePic} className="w-10 h-10 rounded-full" />
+                ) : (
+                  <Button className="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center hover:cursor-pointer text-white">
+                    {firstNameLetter}
+                    {surnameLetter}
+                  </Button>
+                )
+              }
+
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40 mt-1 mr-4 bg-accent">
               <DropdownMenuItem asChild>
@@ -87,7 +95,8 @@ export default function DesktopNavbar() {
             </Link>
           </Button>
         </li>
-      )}
-    </ul>
+      )
+      }
+    </ul >
   );
 }

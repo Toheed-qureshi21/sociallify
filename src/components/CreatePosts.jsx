@@ -63,7 +63,7 @@ export default function CreatePosts() {
               <Avatar className="w-8 h-8 mb-2">
                 <AvatarImage
                   className="w-8 h-8"
-                  src={user?.image || "/avatar.webp"}
+                  src={user?.profilePic || "/avatar.webp"}
                   alt={user?.name}
                 />
               </Avatar>
