@@ -54,16 +54,16 @@ export default function PostCard({ post, user }) {
 
 
   // Delete post handler
-  const handleDelete = async () => {
+  const handleDelete = async (id) => {
     setIsDeleting(true);
     try {
-      const data = await deletePost(post._id);
+      const data = await deletePost(id);
       toast(data.message, { closeButton: true });
       setUser(data.user);
-      setPosts((prev) => prev.filter((p) => p._id !== post._id));
+      setPosts((prev) => prev.filter((p) => p._id !== id));
     } catch (err) {
       toast(err?.response?.data?.message || "Something went wrong", {
-        closeButton: true, i
+        closeButton: true, 
       });
     } finally {
       setIsDeleting(false);
@@ -164,7 +164,7 @@ export default function PostCard({ post, user }) {
                 </div>
               </div>
               {user?._id === post.userId?._id && (
-                <DeleteDialog isPost={true} onDelete={handleDelete} />
+                <DeleteDialog isPost={true} onDelete={()=>handleDelete(post._id)} />
               )}
             </div>
           </div>

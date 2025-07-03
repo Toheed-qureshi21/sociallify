@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+import { User } from "@/models/user.model.js";
+import { Comment } from "@/models/comment.model.js";
+import { Like } from "@/models/like.model.js";
+import { Notification } from "@/models/notification.model.js";
 
 const postSchema = new mongoose.Schema(
   {

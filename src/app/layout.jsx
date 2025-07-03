@@ -45,7 +45,6 @@ export default async function RootLayout({children }) {
     //  notifications = await getNotifications(cookieHeader);
   }
  
-  
   return (
     <html lang="en" suppressHydrationWarning>
       <body
